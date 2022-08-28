@@ -1,0 +1,166 @@
+import java.util.*;
+public class App {
+    public static String gerador_cpf() 
+    {
+        int max = 9;
+        int min = 0;
+        String cpf="";
+        for (int i=0;i<11;i++) 
+        {
+            int n = (int)Math.floor(Math.random() * (max-min) + min);
+            cpf = cpf + String.valueOf(n);
+        }
+        return cpf;
+    }
+
+    public static void imprime(String[] vetor) {
+        System.out.println ("\n");
+        for (int i=0;i<vetor.length;i++) {
+            System.out.println (vetor[i]);
+        }
+    }
+
+    public static void menu_doencas() 
+    {
+        System.out.println ("\n**DIAGNÓSTICOS**");
+        System.out.println ("[1] covid");
+        System.out.println ("[2] zica");
+        System.out.println ("[3] chikungunya");
+        System.out.println ("[4] dengue");
+        System.out.println ("[5] varíola do macaco");
+        System.out.println ("[6] outros");
+    }
+
+    public static String printar_doencas(int d) 
+    {
+        switch(d) 
+        {
+            case 1: 
+                return "covid";
+            case 2:
+                return "zica";
+            case 3: 
+                return "chikungunya";
+            case 4:
+                return "dengue";
+            case 5: 
+                return "varíola do macaco";
+            case 6:
+                return "outros";
+            default:
+                return "";
+        }
+    }
+
+    public static void main (String[] args) {
+        Scanner input = new Scanner (System.in);
+        CadastroPacientes lista = new CadastroPacientes(10);
+        int opc=0;
+        while (opc!=8)  
+        {
+            System.out.println ("\f**MENU DE OPÇÕES**");
+            System.out.println ("[1] adicionar paciente");
+            System.out.println ("[2] remover paciente");
+            System.out.println ("[3] exibir lista inteira de cadastros");
+            System.out.println ("[4] exibir lista de pacientes já cadastrados");
+            System.out.println ("[5] exibir o nome dos pacientes em ordem alfabética");
+            System.out.println ("[6] média de consultas dos pacientes cadastrados");
+            System.out.println ("[7] exibir a porcentagem dos pacientes com cada doença");
+            System.out.println ("[8] encerrar o aplicativo");
+            System.out.println ("\n Insira a opção desejada: ");
+            opc = input.nextInt();
+
+            switch (opc) {
+                case 1:
+                    System.out.println ("\f**NOVO PACIENTE**");
+                    boolean segue = false;
+                    String nome = "";
+                    while (!segue) {
+                        System.out.println ("Digite o nome do paciente:");
+                        nome = input.nextLine(); 
+                        if (!nome.equals("")) segue = true;
+                    } 
+                    
+                    String tel="";
+                    do {System.out.println ("Digite um telefone para contato conforme o exemplo= 51999999999");
+                        tel = input.nextLine();} while (tel.length()!=11);
+                    System.out.println ("Digite o nome do convênio do paciente:");
+                    String conv = input.nextLine();
+                    //System.out.println ("Digite o nome do paciente:");
+                    //String nome = input.nextLine();
+                    int num=0;
+                    boolean funcionaa=false;
+                    while (!funcionaa)
+                    {
+                        System.out.println ("Digite o numero correspondente ao diagnóstico:");
+                        menu_doencas();
+                        num = input.nextInt();
+                        if (num==1 || num==2 || num==3 || num==4 || num==5 || num==6) funcionaa=true;
+                    }    
+                    System.out.println ("Digite o número de consultas realizadas no mês:");
+                    int consultas = input.nextInt();
+
+                    Paciente paciente = new Paciente(nome,gerador_cpf(),tel,conv,num,consultas);
+                    //lista.adiciona(paciente);
+                    if (lista.adiciona(paciente)) {
+                        System.out.println ("Paciente " + paciente.getNome() + " foi adicionado com sucesso");
+                    } else System.out.println ("Não foi possível adicionar o paciente " + paciente.getNome() + " tente remover algum antes de tentar de novo!");
+                    lista.imprimeTudo();
+                    System.out.println ("\nAperte qualquer tecla para continuar");
+                    input.next();
+                    break;
+
+                case 2:
+                    System.out.println ("\f");
+                    lista.menu_nomes();
+                    //lista.remove(lista.qualPaciente());
+                    if (lista.remove(lista.qualPaciente())) {
+                        System.out.println ("Paciente " + lista.qualPaciente().getNome() + " foi removido com sucesso");
+                    } else System.out.println ("Não existem pacientes para serem removidos");
+                    lista.imprimeTudo();
+                    System.out.println ("\nAperte qualquer tecla para continuar");
+                    input.next();
+                    break;
+
+                case 3:    
+                    System.out.println ("\f");
+                    lista.imprimeRegistrados();
+                    System.out.println ("\nAperte qualquer tecla para continuar");
+                    input.next();
+                    break;
+
+                case 4:
+                    System.out.println ("\f");
+                    lista.imprimeTudo();
+                    System.out.println ("\nAperte qualquer tecla para continuar");
+                    input.next();
+                    break;
+
+                case 5:
+                    System.out.println ("\f*NOMES EM ORDEM ALFABÉTICA CRESCENTE*");
+                    imprime(lista.ordemAlfab());
+                    System.out.println ("\nAperte qualquer tecla para continuar");
+                    input.next();
+                    break;
+
+                case 6:
+                    System.out.println ("\fMédia de consultas dos pacientes cadastrados: ");
+                    System.out.println (lista.mediaConsultas());
+                    System.out.println ("\nAperte qualquer tecla para continuar");
+                    input.next();
+                    break;
+                case 7:
+
+                    break;
+                case 8:    
+                    System.out.println ("\fObrigada por usar nosso aplicativo, esperamos ter ajudado!");
+                    break;
+                default:
+                    System.out.println ("\fInsira uma opção válida do menu!");
+                    System.out.println ("\nAperte qualquer tecla para continuar");
+                    input.next();
+                    break;
+            }
+        }
+    }
+}
