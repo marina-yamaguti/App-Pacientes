@@ -1,0 +1,129 @@
+import java.util.*;
+public class CadastroPacientes {
+    private Paciente[] lista;
+    private int quantia;
+    
+    public CadastroPacientes (int tamanho) {
+        lista = new Paciente[tamanho];
+        quantia = 0;
+    }
+    
+    public Paciente[] getLista() {return lista;}
+    //nao precisa de setter, nao tem oq modificar,tudo tem metodo pra fazer modificacoes
+    
+    public int localiza (Paciente paciente) {
+        for (int i=0; i<quantia; i++) {
+            if (lista[i]==paciente) return i;
+        }
+        return -1;
+    }
+    
+    public boolean adiciona (Paciente paciente) {
+        if (quantia>=lista.length) {
+            return false;
+        } else {
+            lista[quantia] = paciente;
+            quantia++;
+            return true;
+        }
+    }
+    
+    public boolean remove (Paciente paciente) {
+        if (quantia==0) return false;
+        int posicao = localiza(paciente);
+        for (int i=posicao;i<quantia-1;i++) {
+            lista[i]=lista[i+1];
+        }
+        lista[quantia-1]=null;
+        quantia--;
+        return true;
+    }
+    
+    public double mediaConsultas() {
+        double soma=0;
+        for (int i=0;i<quantia;i++) {
+            soma = soma + lista[i].getConsultas();
+        }
+        return soma/quantia;
+    }
+    
+    public void imprimeRegistrados() {
+        System.out.println ("LISTA DE PACIENTES JÁ CADASTRADOS:\n");
+        for (int i=0;i<quantia;i++) {
+            System.out.println ("\nPaciente número " + (i+1) + ":");
+            System.out.println (lista[i].toString());
+            System.out.println ("---------------------------");
+        }
+    }
+    
+    public void imprimeTudo() {
+        System.out.println ("LISTA DE CADASTROS:\n");
+        for (int i=0;i<lista.length;i++){
+            if (lista[i]==null) {
+                System.out.println ("\nNa posição " + (i+1) + " não há paciente cadastrado.");
+                System.out.println ("---------------------------");
+            }
+            else {
+                System.out.println ("\nPaciente número " + (i+1) + ":");
+                System.out.println (lista[i].toString());
+                System.out.println ("---------------------------");
+            }
+        }
+    }
+    
+    public String[] ordemAlfab() {
+        String[] nomes = new String[quantia];
+        for (int i=0;i<quantia;i++) {
+            nomes[i]=lista[i].getNome();
+        }
+        String aux;
+        for (int n=0;n<quantia;n++) {
+            for (int k=n+1;k<quantia;k++) {
+                if (nomes[n].compareToIgnoreCase(nomes[k])>0) {
+                    aux = nomes[n];
+                    nomes[n]=nomes[k];
+                    nomes[k]=aux;
+                }
+            }
+        }
+        return nomes;
+    }
+    
+    public int menu_nomes() {
+        Scanner in = new Scanner (System.in);
+        for (int i=0;i<quantia;i++) {
+            System.out.println ("[" + quantia + "] " + lista[i].getNome());
+        }
+        System.out.print ("Digite o número correspondente a opção desejada:");
+        return in.nextInt();
+    }
+    
+    public Paciente qualPaciente() {
+        int n = menu_nomes();
+        switch (n) {
+            case 1:
+                return lista[0];
+            case 2:
+                return lista[1];
+            case 3:
+                return lista[2];
+            case 4:
+                return lista[3];
+            case 5:
+                return lista[4];
+            case 6:
+                return lista[5];
+            case 7:
+                return lista[6];
+            case 8:
+                return lista[7];
+            case 9:
+                return lista[8];
+            case 10:
+                return lista[9];
+            default:
+                return null;
+        }
+    }
+    
+}
